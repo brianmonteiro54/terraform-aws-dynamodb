@@ -8,7 +8,9 @@ locals {
 
   # Encryption configuration
   enable_encryption = var.enable_encryption || var.kms_key_arn != null
-  kms_key_arn       = var.kms_key_arn != null ? var.kms_key_arn : try(aws_kms_key.dynamodb[0].arn, null)
+  kms_key_arn = var.kms_key_arn != null ? var.kms_key_arn : (
+    length(aws_kms_key.dynamodb) > 0 ? aws_kms_key.dynamodb[0].arn : null
+  )
 
   # Auto scaling flags
   create_autoscaling_read  = var.billing_mode == "PROVISIONED" && var.autoscaling_enabled
