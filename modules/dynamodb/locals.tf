@@ -7,7 +7,7 @@ locals {
   table_name = var.table_name_prefix != "" ? "${var.table_name_prefix}-${var.table_name}" : var.table_name
 
   # Encryption configuration
-  enable_encryption = var.kms_key_arn != null ? true : var.enable_encryption
+  enable_encryption = var.enable_encryption || var.kms_key_arn != null
   kms_key_arn       = var.kms_key_arn != null ? var.kms_key_arn : try(aws_kms_key.dynamodb[0].arn, null)
 
   # Auto scaling flags
@@ -20,7 +20,6 @@ locals {
       Module      = "terraform-aws-dynamodb"
       ManagedBy   = "Terraform"
       Environment = var.environment
-      CostCenter  = var.cost_center
     },
     var.tags
   )

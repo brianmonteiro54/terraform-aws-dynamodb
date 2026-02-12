@@ -444,9 +444,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "cost_center" {
-  description = "Cost center for billing purposes"
-  type        = string
-  default     = "engineering"
+variable "create_kms_key" {
+  description = "Controls if a custom KMS key should be created. Set to false to use AWS Managed Key (alias/aws/dynamodb)"
+  type        = bool
+  default     = true
 }
